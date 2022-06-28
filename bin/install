@@ -16,11 +16,10 @@ function get_download_url() {
     read -r os
 
     # only support AMD 64 architecture for simplicity
-    curl -s "https://api.github.com/repos/my-owner/my-plugin/releases/tags/${version}" | \
+    curl -s "https://api.github.com/repos/earthly/earthly/releases/tags/${version}" | \
         jq -r '.assets[] |
-                    select(.name | contains("my-plugin") and contains("'${os}'")) |
-                    select(.name | contains("amd64") or contains("x86_64")) |
-                    select(.name | contains(".asc") | not) |
+                    select(.name | contains("earthly") and contains("'${os}'")) |
+                    select(.name | contains("amd64")) |
                     .browser_download_url'
 }
 
@@ -32,8 +31,8 @@ function download() {
     mkdir -p ${install_path}/bin
 
     echo "Download from ${url} to ${install_path}"
-    curl -L "${url}" -o "${install_path}/bin/my-plugin"
-    chmod +x "${install_path}/bin/my-plugin"
+    curl -L "${url}" -o "${install_path}/bin/earthly"
+    chmod +x "${install_path}/bin/earthly"
 }
 
 # append `v` to version number. `v` was stripped off when doing `asdf list-all` for compatibility with `asdf latest`
